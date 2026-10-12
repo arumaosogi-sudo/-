@@ -156,6 +156,4 @@ The project has no automated test suite yet. Every phase was verified with scrip
 
 Adding Vitest unit tests for `src/lib/money.ts` / `src/lib/schedule.ts` and Playwright flows is the next step.
 
-## Author
 
-Built by [@arumaosogi-sudo](https://github.com/arumaosogi-sudo), from requirements gathering with a teacher through to production deployment, with an AI pair-programmer (Claude Code).
