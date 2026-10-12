@@ -1,0 +1,9 @@
+# Local-only files that must never be uploaded
+.env*
+!.env.example
+.data
+.claude
+.next
+node_modules
+.neon
+android

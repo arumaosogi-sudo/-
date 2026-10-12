@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.kidsavingsbank",
+      "sha256_cert_fingerprints": [
+        "3D:FF:27:FA:BE:77:9C:DF:6A:A1:5F:07:C6:01:EE:D2:9F:C9:40:69:6D:ED:65:17:7A:B9:16:D9:D5:E8:18:59"
+      ]
+    }
+  }
+]

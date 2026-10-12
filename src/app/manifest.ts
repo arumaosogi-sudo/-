@@ -1,0 +1,21 @@
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "กระปุกห้องเรียน",
+    short_name: "กระปุกห้องเรียน",
+    description: "บันทึกเงินออมของนักเรียนในห้องเรียน สำหรับคุณครู",
+    lang: "th",
+    start_url: "/classes",
+    scope: "/",
+    display: "standalone",
+    orientation: "portrait",
+    background_color: "#fbfaf6",
+    theme_color: "#2f9e7a",
+    icons: [
+      { src: "/pwa-icon/192", sizes: "192x192", type: "image/png" },
+      { src: "/pwa-icon/512", sizes: "512x512", type: "image/png" },
+      { src: "/pwa-icon/maskable", sizes: "512x512", type: "image/png", purpose: "maskable" },
+    ],
+  };
+}
