@@ -113,5 +113,7 @@ Vercel Cron เรียก `GET /api/cron/notify` วันละครั้�
 - ดาวน์โหลด: https://kid-savings-bank.vercel.app/download/kid-savings-bank.apk (ปุ่มอยู่ใน ตั้งค่า → ติดตั้งแอปบนมือถือ)
 - โปรเจกต์อยู่ที่ `android/` · กุญแจเซ็นแอป `android/kid-savings-bank.keystore` + รหัสใน `android/signing.env` **ห้ามหาย ห้าม commit** ไม่งั้นอัปเดตแอปทับของเดิมไม่ได้
 - `public/.well-known/assetlinks.json` ต้องมี SHA-256 ของกุญแจนี้ แอปจึงเปิดเต็มจอโดยไม่มีแถบ URL
+- เวอร์ชัน 1.0.1 (versionCode 2) เซ็นด้วยกุญแจใหม่ (SHA-256 `39:D0:7E:…:63:8E`) เพราะกุญแจของ 1.0.0 หาย เครื่องที่ลง 1.0.0 ไว้ต้องถอนแอปเดิมก่อนลงใหม่ · assetlinks มีทั้งกุญแจเก่าและใหม่ แอปเดิมจึงยังใช้ได้
+- สร้างแบบไม่ใช้ Bubblewrap ก็ได้: JDK ของ Android Studio (`jbr`) → คัดลอก `android/` ไปโฟลเดอร์ที่ path เป็นภาษาอังกฤษล้วน → `gradlew assembleRelease` → `zipalign` + `apksigner sign` จาก Android SDK build-tools
 - เนื้อหาแอปดึงจากเว็บเสมอ แก้เว็บแล้ว deploy ก็พอ ไม่ต้องสร้าง APK ใหม่ (สร้างใหม่เฉพาะเมื่อเปลี่ยนชื่อ/ไอคอน/สี)
 - สร้าง APK ใหม่: เครื่องมือต้องใช้ JDK 17 (`D:\DevTools\jdk-17`) → เพิ่ม `appVersionCode` ใน `android/twa-manifest.json` → `cd android && npx @bubblewrap/cli update && npx @bubblewrap/cli build` (ตั้ง `BUBBLEWRAP_KEYSTORE_PASSWORD` / `BUBBLEWRAP_KEY_PASSWORD` จาก signing.env) แล้วคัดลอก `app-release-signed.apk` ไปที่ `public/download/kid-savings-bank.apk`

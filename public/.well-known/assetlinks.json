@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "app.vercel.kidsavingsbank",
       "sha256_cert_fingerprints": [
-        "3D:FF:27:FA:BE:77:9C:DF:6A:A1:5F:07:C6:01:EE:D2:9F:C9:40:69:6D:ED:65:17:7A:B9:16:D9:D5:E8:18:59"
+        "3D:FF:27:FA:BE:77:9C:DF:6A:A1:5F:07:C6:01:EE:D2:9F:C9:40:69:6D:ED:65:17:7A:B9:16:D9:D5:E8:18:59",
+        "39:D0:7E:95:10:E7:04:0C:82:C7:1D:2C:F5:EE:2B:76:6D:20:37:B0:9C:7F:9D:5B:42:1F:FE:7F:79:A0:63:8E"
       ]
     }
   }
