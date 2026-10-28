@@ -67,6 +67,7 @@ src/
   server/crypto.ts         เข้ารหัส key (AES-256-GCM)
   app/api/line/webhook/[channel]/  Webhook ของ OA แต่ละตัว
   app/api/cron/notify/     ตัวส่งอัตโนมัติ (Vercel Cron)
+  app/api/cron/cleanup/    ลบบัญชีครูที่ไม่ได้ใช้งานเกิน 1 ปี พร้อมข้อมูลทั้งหมด (Vercel Cron ทุกวันอาทิตย์; ใส่ ?dryRun=1 เพื่อดูจำนวนโดยไม่ลบ)
   app/(app)/classes/       ห้องเรียน, นักเรียน, ฝาก-ถอน, ผู้ปกครอง (LINE), ส่งออก Excel
   app/(app)/settings/      ตั้งค่า: บัญชี, ธีม, ติดตั้งแอป, LINE OA ของฉัน, แจ้งเตือน
 ```

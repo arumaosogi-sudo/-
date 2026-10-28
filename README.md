@@ -132,6 +132,7 @@ src/
     api/auth/               Better Auth handler (LINE Login)
     api/line/webhook/[channel]/   per-OA webhook (signature-verified)
     api/cron/notify/        weekly parent notifications (Vercel Cron)
+    api/cron/cleanup/       weekly: deletes teacher accounts inactive for 1 year (?dryRun=1 to preview)
     login/                  sign-in page
   db/                       Drizzle schema + Neon/PGlite client
   lib/                      auth config, money parsing/formatting, Bangkok-time scheduling, validation
