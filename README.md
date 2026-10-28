@@ -111,7 +111,7 @@ cp .env.example .env.local   # fill BETTER_AUTH_SECRET; everything else is optio
 npm run dev                  # runs migrations, then starts http://localhost:3000
 ```
 
-Local development allows email sign-up for testing. Production uses LINE Login only. See [docs/SETUP.th.md](docs/SETUP.th.md) for the LINE Login channel, OA setup, deployment, and building the Android APK.
+Teachers can sign in with LINE Login or sign up with email + password (no email verification). See [docs/SETUP.th.md](docs/SETUP.th.md) for the LINE Login channel, OA setup, deployment, and building the Android APK.
 
 | Script | Purpose |
 |---|---|

@@ -5,12 +5,8 @@ import { nextCookies } from "better-auth/next-js";
 import { db, schema } from "@/db";
 
 // Teachers sign in with LINE Login (one LINE Login channel for the whole app,
-// set via LINE_CLIENT_ID / LINE_CLIENT_SECRET). Email + password remains only
-// so accounts created before LINE Login can sign in once and link LINE;
-// new email sign-ups are disabled. In local development email sign-up stays
-// on so the app can be tested without a real LINE account.
-const isDev = process.env.NODE_ENV !== "production";
-
+// set via LINE_CLIENT_ID / LINE_CLIENT_SECRET) or with email + password.
+// Email sign-ups are open and need no email verification.
 const line =
   process.env.LINE_CLIENT_ID && process.env.LINE_CLIENT_SECRET
     ? {
@@ -28,8 +24,6 @@ const line =
     : undefined;
 
 export const lineLoginEnabled = Boolean(line);
-/** Email sign-up is only offered in local development. */
-export const emailSignUpEnabled = isDev;
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -43,7 +37,6 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    disableSignUp: !emailSignUpEnabled,
     minPasswordLength: 8,
     autoSignIn: true,
   },

@@ -12,11 +12,9 @@ import { authClient, authErrorMessage } from "@/lib/auth-client";
 type Props = {
   /** LINE Login is configured. */
   line: boolean;
-  /** Email sign-up allowed (local development only). */
-  emailSignUp: boolean;
 };
 
-export function AuthForm({ line, emailSignUp }: Props) {
+export function AuthForm({ line }: Props) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -75,9 +73,7 @@ export function AuthForm({ line, emailSignUp }: Props) {
         {line && <p className="-mt-2 text-center text-sm text-muted-foreground">ครั้งแรกระบบจะสร้างบัญชีให้อัตโนมัติ</p>}
 
         <details className="group rounded-lg border p-3 text-sm" open={!line}>
-          <summary className="cursor-pointer text-muted-foreground">
-            {emailSignUp ? "ใช้อีเมล (สำหรับทดสอบในเครื่อง)" : "เคยสมัครด้วยอีเมลไว้ก่อนหน้านี้"}
-          </summary>
+          <summary className="cursor-pointer text-muted-foreground">ใช้อีเมล</summary>
           <form onSubmit={onEmail} className="mt-3 grid gap-3">
             {mode === "signup" && <FormField label="ชื่อที่ใช้แสดง" name="name" autoComplete="name" required />}
             <FormField label="อีเมล" name="email" type="email" autoComplete="email" required />
@@ -92,16 +88,14 @@ export function AuthForm({ line, emailSignUp }: Props) {
             <Button type="submit" variant="outline" size="touch" disabled={pending}>
               {mode === "signup" ? "สมัครด้วยอีเมล" : "เข้าสู่ระบบด้วยอีเมล"}
             </Button>
-            {emailSignUp && (
-              <button
-                type="button"
-                className="text-muted-foreground underline underline-offset-2"
-                onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-              >
-                {mode === "signin" ? "สมัครบัญชีทดสอบ" : "มีบัญชีแล้ว เข้าสู่ระบบ"}
-              </button>
-            )}
-            {!emailSignUp && (
+            <button
+              type="button"
+              className="text-muted-foreground underline underline-offset-2"
+              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            >
+              {mode === "signin" ? "ยังไม่มีบัญชี สมัครด้วยอีเมล" : "มีบัญชีแล้ว เข้าสู่ระบบ"}
+            </button>
+            {line && (
               <p className="text-muted-foreground">หลังเข้าสู่ระบบ ไปที่ ตั้งค่า → เชื่อมบัญชี LINE เพื่อใช้ LINE ครั้งต่อไป</p>
             )}
           </form>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PiggyBank } from "lucide-react";
-import { emailSignUpEnabled, lineLoginEnabled } from "@/lib/auth";
+import { lineLoginEnabled } from "@/lib/auth";
 import { getSession } from "@/server/dal";
 import { AuthForm } from "./auth-form";
 
@@ -20,7 +20,7 @@ export default async function LoginPage() {
           <h1 className="text-2xl font-semibold">กระปุกห้องเรียน</h1>
           <p className="mt-1 text-muted-foreground">บันทึกเงินออมของนักเรียนได้ง่าย ๆ ในที่เดียว</p>
         </div>
-        <AuthForm line={lineLoginEnabled} emailSignUp={emailSignUpEnabled} />
+        <AuthForm line={lineLoginEnabled} />
       </div>
     </main>
   );
