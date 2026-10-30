@@ -26,14 +26,14 @@ const sameChannel = and(
 // Settings
 // ---------------------------------------------------------------------------
 
-const DEFAULT_SETTINGS: Schedule = { enabled: false, everyDays: 7, sendHour: 18, lastSentOn: null };
+const DEFAULT_SETTINGS: Schedule = { enabled: false, sendWeekday: 5, sendHour: 18, lastSentOn: null };
 
 export async function getSettings(teacherId: string): Promise<Schedule> {
   const [row] = await db.select().from(notificationSettings).where(eq(notificationSettings.teacherId, teacherId));
   return row ?? DEFAULT_SETTINGS;
 }
 
-export async function saveSettings(teacherId: string, data: { enabled: boolean; everyDays: number; sendHour: number }) {
+export async function saveSettings(teacherId: string, data: { enabled: boolean; sendWeekday: number; sendHour: number }) {
   await db
     .insert(notificationSettings)
     .values({ teacherId, ...data })

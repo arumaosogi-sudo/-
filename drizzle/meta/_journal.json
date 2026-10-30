@@ -36,6 +36,13 @@
       "when": 1791128944743,
       "tag": "0004_line_channel_bot_user",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793366808495,
+      "tag": "0005_weekly_schedule",
+      "breakpoints": true
     }
   ]
 }

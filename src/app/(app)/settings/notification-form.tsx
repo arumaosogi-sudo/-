@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { FREQUENCY_OPTIONS, SEND_HOURS, type Schedule } from "@/lib/schedule";
+import { SEND_HOURS, WEEKDAYS, type Schedule } from "@/lib/schedule";
 import { saveNotificationSettingsAction, sendNowAction } from "./actions";
 
 const selectClass = "h-11 w-full rounded-lg border bg-background px-3 text-base disabled:opacity-50";
@@ -26,7 +26,7 @@ export function NotificationForm({ settings }: { settings: Schedule }) {
   // Controlled + manual submit: React's automatic form reset after an action
   // would snap the switch and selects back to their initial values.
   const [enabled, setEnabled] = useState(settings.enabled);
-  const [everyDays, setEveryDays] = useState(settings.everyDays);
+  const [sendWeekday, setSendWeekday] = useState(settings.sendWeekday);
   const [sendHour, setSendHour] = useState(settings.sendHour);
   const [pending, startTransition] = useTransition();
 
@@ -34,7 +34,7 @@ export function NotificationForm({ settings }: { settings: Schedule }) {
     e.preventDefault();
     const formData = new FormData();
     if (enabled) formData.set("enabled", "on");
-    formData.set("everyDays", String(everyDays));
+    formData.set("sendWeekday", String(sendWeekday));
     formData.set("sendHour", String(sendHour));
     startTransition(async () => {
       const result = await saveNotificationSettingsAction(null, formData);
@@ -54,17 +54,17 @@ export function NotificationForm({ settings }: { settings: Schedule }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="grid gap-1.5">
-          <Label htmlFor="notify-every">ความถี่</Label>
+          <Label htmlFor="notify-weekday">ส่งทุกสัปดาห์ วัน</Label>
           <select
-            id="notify-every"
-            value={everyDays}
-            onChange={(e) => setEveryDays(Number(e.target.value))}
+            id="notify-weekday"
+            value={sendWeekday}
+            onChange={(e) => setSendWeekday(Number(e.target.value))}
             disabled={!enabled}
             className={selectClass}
           >
-            {FREQUENCY_OPTIONS.map((o) => (
-              <option key={o.days} value={o.days}>
-                {o.label}
+            {WEEKDAYS.map((w) => (
+              <option key={w.day} value={w.day}>
+                {w.label}
               </option>
             ))}
           </select>

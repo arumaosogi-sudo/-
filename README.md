@@ -71,7 +71,7 @@ flowchart LR
   P["Parent in LINE"] <--> OA["Teacher's LINE OA"]
   OA -->|signed webhook| WH
   DAL -->|reply / push<br/>decrypted per-OA token| OA
-  VC["Vercel Cron<br/>daily 18:00 ICT"] -->|Bearer CRON_SECRET| CRON
+  VC["GitHub Actions hourly<br/>+ Vercel Cron daily 18:00 ICT"] -->|Bearer CRON_SECRET| CRON
 ```
 
 ### Data model (simplified)
@@ -131,7 +131,7 @@ src/
     (app)/settings/         account, theme, install app, LINE OA connection, notification schedule
     api/auth/               Better Auth handler (LINE Login)
     api/line/webhook/[channel]/   per-OA webhook (signature-verified)
-    api/cron/notify/        weekly parent notifications (Vercel Cron)
+    api/cron/notify/        weekly parent notifications on the teacher's chosen weekday + hour (hourly trigger)
     api/cron/cleanup/       weekly: deletes teacher accounts inactive for 1 year (?dryRun=1 to preview)
     login/                  sign-in page
   db/                       Drizzle schema + Neon/PGlite client

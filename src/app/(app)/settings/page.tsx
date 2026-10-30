@@ -29,7 +29,7 @@ export default async function SettingsPage() {
   ]);
   const internalEmail = user.email.endsWith("@line.local");
   const next = nextSend(settings, new Date());
-  const estimate = estimateMonthlyMessages(parentCount, settings.everyDays);
+  const estimate = estimateMonthlyMessages(parentCount);
 
   return (
     <div className="grid gap-6">

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
-import { FREQUENCY_OPTIONS, SEND_HOURS } from "@/lib/schedule";
+import { SEND_HOURS, WEEKDAYS } from "@/lib/schedule";
 import type { ActionResult } from "@/lib/validation";
 import { requireUser } from "@/server/dal";
 import { disconnectLineChannel, repairWebhook, saveLineChannel } from "@/server/line-channels";
@@ -11,7 +11,7 @@ import { countLinkedParents, saveSettings, sendToParents } from "@/server/notify
 
 const settingsSchema = z.object({
   enabled: z.literal("on").optional().transform(Boolean),
-  everyDays: z.coerce.number().refine((d) => FREQUENCY_OPTIONS.some((o) => o.days === d), "เลือกความถี่ไม่ถูกต้อง"),
+  sendWeekday: z.coerce.number().refine((d) => WEEKDAYS.some((w) => w.day === d), "เลือกวันไม่ถูกต้อง"),
   sendHour: z.coerce.number().refine((h) => SEND_HOURS.includes(h), "เลือกเวลาไม่ถูกต้อง"),
 });
 

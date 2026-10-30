@@ -1,0 +1,23 @@
+# Wakes the parent-notification sender every hour so each teacher's chosen
+# weekday + hour is honoured (Vercel Hobby cron can only run once a day).
+# Needs the repository secret CRON_SECRET (same value as on Vercel).
+name: Hourly parent notifications
+
+on:
+  schedule:
+    - cron: "5 * * * *" # minute 5 of every hour (UTC); GitHub may start it a few minutes late
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call /api/cron/notify
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then echo "::error::Repository secret CRON_SECRET is not set"; exit 1; fi
+          curl --fail-with-body --silent --show-error --max-time 120 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            https://kid-savings-bank.vercel.app/api/cron/notify

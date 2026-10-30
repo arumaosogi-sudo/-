@@ -1,0 +1,1 @@
+ALTER TABLE "notification_settings" ADD COLUMN "send_weekday" integer DEFAULT 5 NOT NULL;

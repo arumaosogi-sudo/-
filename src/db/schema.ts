@@ -205,7 +205,10 @@ export const notificationSettings = pgTable("notification_settings", {
   /** The LINE OA this teacher sends through (null = not connected yet). */
   lineChannelId: uuid("line_channel_id").references(() => lineChannels.id, { onDelete: "set null" }),
   enabled: boolean("enabled").notNull().default(false),
+  /** Legacy (the schedule is weekly now, see sendWeekday); kept so old rows stay readable. */
   everyDays: integer("every_days").notNull().default(7),
+  /** Day of the week to send on, ISO numbering: 1 = Monday … 7 = Sunday. */
+  sendWeekday: integer("send_weekday").notNull().default(5),
   /** Hour of day in Bangkok time (0-23) to send at. */
   sendHour: integer("send_hour").notNull().default(18),
   /** Bangkok calendar date ("YYYY-MM-DD") of the last scheduled send. */

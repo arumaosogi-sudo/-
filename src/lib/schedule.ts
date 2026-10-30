@@ -1,11 +1,12 @@
-/** Frequency choices shown in Settings, in days. */
-export const FREQUENCY_OPTIONS = [
-  { days: 1, label: "ทุกวัน" },
-  { days: 2, label: "ทุก 2 วัน" },
-  { days: 3, label: "ทุก 3 วัน" },
-  { days: 7, label: "ทุกสัปดาห์" },
-  { days: 14, label: "ทุก 2 สัปดาห์" },
-  { days: 30, label: "ทุกเดือน (30 วัน)" },
+/** Days a teacher can pick for the weekly send (ISO numbering, Monday = 1). */
+export const WEEKDAYS = [
+  { day: 1, label: "วันจันทร์" },
+  { day: 2, label: "วันอังคาร" },
+  { day: 3, label: "วันพุธ" },
+  { day: 4, label: "วันพฤหัสบดี" },
+  { day: 5, label: "วันศุกร์" },
+  { day: 6, label: "วันเสาร์" },
+  { day: 7, label: "วันอาทิตย์" },
 ] as const;
 
 /** Hours a teacher can pick (the scheduler runs once an hour). */
@@ -16,7 +17,7 @@ export const FREE_MONTHLY_MESSAGES = 300;
 
 export type Schedule = {
   enabled: boolean;
-  everyDays: number;
+  sendWeekday: number;
   sendHour: number;
   lastSentOn: string | null;
 };
@@ -35,39 +36,42 @@ export function bangkokParts(now: Date) {
   return { date: `${get("year")}-${get("month")}-${get("day")}`, hour: Number(get("hour")) };
 }
 
-/** Whole days from date a to date b ("YYYY-MM-DD"). */
-function daysBetween(a: string, b: string) {
-  return Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86_400_000);
-}
-
 function addDays(date: string, days: number) {
   return new Date(Date.parse(`${date}T00:00:00Z`) + days * 86_400_000).toISOString().slice(0, 10);
 }
 
+/** ISO weekday (Monday = 1 … Sunday = 7) of a "YYYY-MM-DD" date. */
+function isoWeekday(date: string) {
+  return new Date(`${date}T00:00:00Z`).getUTCDay() || 7;
+}
+
 /**
- * Due when it's past the chosen hour today and at least `everyDays` days have
- * passed since the last send. A missed hourly run still sends later that day.
+ * Due on the chosen weekday once the chosen hour has passed, if nothing was
+ * sent yet today. A late hourly run still sends later that day; a whole missed
+ * day is skipped rather than sent on the wrong day.
  */
 export function isDue(s: Schedule, now: Date) {
   if (!s.enabled) return false;
   const { date, hour } = bangkokParts(now);
-  if (hour < s.sendHour) return false;
-  return s.lastSentOn === null || daysBetween(s.lastSentOn, date) >= s.everyDays;
+  return isoWeekday(date) === s.sendWeekday && hour >= s.sendHour && s.lastSentOn !== date;
 }
 
 /** Bangkok date + hour of the next scheduled send, or null when disabled. */
 export function nextSend(s: Schedule, now: Date): { date: string; hour: number } | null {
   if (!s.enabled) return null;
   const { date, hour } = bangkokParts(now);
-  const earliest = s.lastSentOn ? addDays(s.lastSentOn, s.everyDays) : date;
-  if (daysBetween(date, earliest) > 0) return { date: earliest, hour: s.sendHour };
-  // Due today: at the chosen hour if it's still ahead, otherwise on the next hourly run.
-  return { date, hour: hour < s.sendHour ? s.sendHour : Math.min(hour + 1, 23) };
+  if (isoWeekday(date) === s.sendWeekday && s.lastSentOn !== date) {
+    // Today is the day: at the chosen hour if it's still ahead, otherwise on the next hourly run.
+    if (hour < s.sendHour) return { date, hour: s.sendHour };
+    if (hour < 23) return { date, hour: hour + 1 };
+  }
+  const ahead = (s.sendWeekday - isoWeekday(date) + 7) % 7 || 7;
+  return { date: addDays(date, ahead), hour: s.sendHour };
 }
 
-/** Rough monthly message usage: one push per linked parent per send. */
-export function estimateMonthlyMessages(parentCount: number, everyDays: number) {
-  return Math.ceil((30 / everyDays) * parentCount);
+/** Rough monthly message usage: one push per linked parent per weekly send. */
+export function estimateMonthlyMessages(parentCount: number) {
+  return Math.ceil((30 / 7) * parentCount);
 }
 
 /**
